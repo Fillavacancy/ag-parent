@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: ag-gate
+
+server:
+  port: 8765
+
+zuul:
+  prefix: /api # 拦截所有以api开头的请求都经过zuul路由
+  routes:  #路由表定义
+    user-center:
+      path: /uc/**
+    ag-auth:
+      path: /auth/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+gate:
+  ignore:
+    startWith: /static,/auth/jwt
+
+auth:
+  serviceId: ace-auth
+  user:
+    token-header: Authorization
+    pub-key:
+        path: jwt/pub.key
+  client:
+    token-header: client-token
+    id: ag-gate  #不填则默认读取spring.application.name
+    secret: 123456
